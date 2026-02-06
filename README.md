@@ -1,59 +1,271 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP_laravel12_Laracast
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Project Description
 
-## About Laravel
+PHP_laravel12_Laracast is a simple Laravel 12 project created to demonstrate the installation, configuration, and usage of Larastan (PHPStan for Laravel).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The main goal of this project is to help beginners understand how to analyze Laravel code for errors, type issues, and bad practices before runtime using Larastan.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## This project shows:
 
-## Learning Laravel
+- How to set up Larastan in a Laravel 12 application
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- How Larastan detects coding mistakes in controllers
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- How to fix errors and re-check code quality
 
-## Laravel Sponsors
+- How to maintain clean and reliable Laravel code
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Larastan runs from the terminal, without starting a server or opening a browser, making it a powerful tool for static code analysis, learning best practices, and interview preparation.
 
-### Premium Partners
+## Key Highlights
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- Laravel 12.* project
 
-## Contributing
+- Larastan configured with phpstan.neon
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Beginner-friendly strictness level
 
-## Code of Conduct
+- Step-by-step setup and verification
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Clean and understandable example
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Project Setup 
+
+---
+
+## STEP 1: Create New Laravel 12 Project
+
+### Run Command :
+
+```
+composer create-project laravel/laravel PHP_laravel12_Laracast "12.*"
+
+```
+
+### Go inside project:
+
+```
+cd PHP_laravel12_Laracast
+
+```
+
+##### Explanation:
+
+This step creates a fresh Laravel 12 application.
+
+All Larastan configuration will be done inside this project.
+
+
+
+
+## STEP 2: Install Larastan 
+
+### Only this command:
+
+```
+composer require larastan/larastan --dev
+
+```
+
+##### Explanation:
+
+Larastan is installed as a development dependency for code analysis.
+
+It will not affect production or runtime performance.
+
+
+
+
+## STEP 3: Create phpstan.neon (MOST IMPORTANT FILE)
+
+### In PHP_laravel12_Laracast root folder, create file:
+```
+ phpstan.neon
+
+```
+
+
+### Open phpstan.neon:
+
+```
+
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+
+    level: 5
+
+    excludePaths:
+        - vendor
+        - storage
+        - bootstrap/cache
+
+```
+
+##### Explanation:
+
+This file contains configuration rules for Larastan.
+
+It tells Larastan which folders to scan and how strict the checks should be.
+
+Make sure file name is phpstan.neon.
+
+
+
+## STEP 4: Create Test Controller 
+
+### Run:
+
+```
+php artisan make:controller CheckController
+
+```
+
+### Open file: app/Http/Controllers/CheckController.php
+
+```
+
+<?php
+
+namespace App\Http\Controllers;
+
+class CheckController extends Controller
+{
+    public function test()
+    {
+        $number = 10;
+        return strtoupper($number); //  wrong on purpose
+    }
+}
+
+```
+
+##### Explanation:
+
+This controller is used to test whether Larastan can detect errors.
+
+Wrong code is written intentionally for verification.
+
+
+
+## STEP 5: Run Larastan (THIS IS THE CHECK)
+
+### Windows:
+
+```
+vendor\bin\phpstan analyse
+
+```
+
+### Linux / Mac:
+
+```
+./vendor/bin/phpstan analyse
+
+```
+##### Explanation:
+
+This command runs Larastan from the terminal.
+
+It analyzes the Laravel application code based on the configuration file.
+
+
+
+## STEP 6: READ THIS OUTPUT CAREFULLY
+
+### You MUST see an error like this:
+
+
+<img width="1469" height="393" alt="Screenshot 2026-02-06 120927" src="https://github.com/user-attachments/assets/3b43f026-fb5b-4aa0-87c6-38af4e95a020" />
+
+
+##### Explanation:
+
+Larastan is WORKING correctly
+
+Larastan reports the type error found in the controller.
+
+This confirms Larastan is working correctly.
+
+
+
+## STEP 7: Fix the Error (FINAL CONFIRMATION)
+
+### Edit controller:
+
+```
+ public function test()
+    {
+        $number = "10";   // now string
+        return strtoupper($number);
+    }
+
+```
+
+##### Explanation:
+
+The data type is corrected to resolve the error.
+
+After fixing, Larastan should not report any issues.
+
+
+
+
+## Step 8: Run Larastan (again)
+
+### Windows:
+
+```
+vendor\bin\phpstan analyse
+
+```
+
+### Linux / Mac:
+
+```
+./vendor/bin/phpstan analyse
+
+```
+
+##### Explanation:
+
+This final run confirms that all errors are fixed.
+
+A successful result means the code is clean.
+
+
+### Final Output:
+
+
+<img width="1465" height="250" alt="Screenshot 2026-02-06 121012" src="https://github.com/user-attachments/assets/c0855a35-617d-4d84-a3e0-77494d9bb44a" />
+
+
+
+---
+
+# Project Folder Structure:
+
+```
+PHP_laravel12_Laracast/
+│
+├── app/
+│   └── Http/
+│       └── Controllers/
+│           └── CheckController.php
+│
+├── vendor/
+├── phpstan.neon
+├── artisan
+└── composer.json
+
+```
